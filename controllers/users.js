@@ -92,7 +92,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.logout = (req, res) => {
   res.cookie('jwt', 'insufficient', {
-    maxAge: 3600000 * 24 * 7,
+    maxAge: 0,
     httpOnly: true,
     secure: false,
     sameSite: 'None',
