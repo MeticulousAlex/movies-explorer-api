@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
 
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, logout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 const limiter = require('./middlewares/requestLimiter');
@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
 
+app.post('/signout', logout);
 app.post('/signin', signinValidation, login);
 app.post('/signup', signupValidation, createUser);
 
@@ -39,7 +40,7 @@ app.use('/', (req, res, next) => next(new NotFoundError('Страницы не �
 app.use(errorLogger);
 
 app.use(errors());
-app.use(errorHandler); // разобраться в хэндлере с unused next()
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
