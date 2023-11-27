@@ -5,6 +5,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const DuplicateError = require('../errors/DuplicateError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+const msg = require('../constants/response-messages');
+const envConsts = require('../constants/evironmentConstants');
 
 const { JWT_SECRET } = process.env;
 
@@ -23,10 +25,10 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Введены некорректные данные'));
+        return next(new BadRequestError(msg.badRequest));
       }
       if (err.name === 'MongoServerError') {
-        return next(new DuplicateError('Пользователь с таким email уже существует'));
+        return next(new DuplicateError(msg.duplicate));
       }
 
       return next(err);
@@ -34,13 +36,13 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getMyInfo = (req, res, next) => {
-  User.findOne({ _id: req.user._id }).orFail(new NotFoundError('Not found'))
+  User.findOne({ _id: req.user._id }).orFail(new NotFoundError(msg.notFound))
     .then((user) => {
       res.status(200).send({ userData: user });
     })
     .catch((err) => {
-      if (err.name === 'Not found') {
-        return next(new NotFoundError('Пользователь не найден'));
+      if (err.message === msg.notFound) {
+        return next(new NotFoundError(err.message));
       }
 
       return next(err);
@@ -51,16 +53,16 @@ module.exports.modifyUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, {
     new: true,
     runValidators: true,
-  }).orFail(new Error('Пользователь с таким id не найден'))
+  }).orFail(new Error(msg.notFound))
     .then((user) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.message === 'Пользователь с таким id не найден') {
+      if (err.message === msg.notFound) {
         return next(new NotFoundError(err.message));
       }
       if (err.name === 'ValidationError' || err.message === 'wrongUrl') {
-        return next(new BadRequestError('Введены некорректные данные'));
+        return next(new BadRequestError(msg.badRequest));
       }
 
       return next(err);
@@ -73,7 +75,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const userData = user.toObject();
       delete userData.password;
-      const token = jwt.sign({ _id: user._id }, process.env.NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, process.env.NODE_ENV === 'production' ? JWT_SECRET : envConsts.secretKey, { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
@@ -83,7 +85,7 @@ module.exports.login = (req, res, next) => {
     })
     .catch((err) => {
       if (err.message === 'Неправильные почта или пароль') {
-        return next(new UnauthorizedError(err.message));
+        return next(new UnauthorizedError(err.unauthorized));
       }
 
       return next(err);
@@ -96,5 +98,5 @@ module.exports.logout = (req, res) => {
     httpOnly: true,
     secure: false,
     sameSite: 'None',
-  }).status(200).send({ message: 'cookie deleted' });
+  }).status(200).send({ message: msg.cookieDeleted });
 };
