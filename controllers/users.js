@@ -38,7 +38,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getMyInfo = (req, res, next) => {
   User.findOne({ _id: req.user._id }).orFail(new NotFoundError(msg.notFound))
     .then((user) => {
-      res.status(200).send({ userData: user });
+      res.send({ userData: user });
     })
     .catch((err) => {
       if (err.message === msg.notFound) {
@@ -55,7 +55,7 @@ module.exports.modifyUser = (req, res, next) => {
     runValidators: true,
   }).orFail(new Error(msg.notFound))
     .then((user) => {
-      res.status(200).send(user);
+      res.send(user);
     })
     .catch((err) => {
       if (err.message === msg.notFound) {
@@ -63,6 +63,9 @@ module.exports.modifyUser = (req, res, next) => {
       }
       if (err.name === 'ValidationError' || err.message === 'wrongUrl') {
         return next(new BadRequestError(msg.badRequest));
+      }
+      if (err.message.includes('E11000 duplicate key error')) {
+        return next(new DuplicateError(msg.duplicate));
       }
 
       return next(err);
@@ -81,11 +84,11 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         secure: false,
         sameSite: 'None',
-      }).status(200).send({ user: userData });
+      }).send({ user: userData });
     })
     .catch((err) => {
-      if (err.message === 'Неправильные почта или пароль') {
-        return next(new UnauthorizedError(err.unauthorized));
+      if (err.message === msg.unauthorized) {
+        return next(new UnauthorizedError(err.message));
       }
 
       return next(err);
@@ -98,5 +101,5 @@ module.exports.logout = (req, res) => {
     httpOnly: true,
     secure: false,
     sameSite: 'None',
-  }).status(200).send({ message: msg.cookieDeleted });
+  }).send({ message: msg.cookieDeleted });
 };

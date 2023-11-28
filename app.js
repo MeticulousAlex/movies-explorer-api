@@ -38,7 +38,7 @@ app.post('/signout', auth, logout);
 app.use('/users', auth, require('./routes/users'));
 app.use('/movies', auth, require('./routes/movies'));
 
-app.use('/', (req, res, next) => next(new NotFoundError(msg.notFound)));
+app.use('/', auth, (req, res, next) => next(new NotFoundError(msg.notFound)));
 
 app.use(errorLogger);
 

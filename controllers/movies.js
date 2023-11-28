@@ -46,7 +46,10 @@ module.exports.createMovie = (req, res, next) => {
 
 module.exports.getAllMovies = (req, res, next) => {
   Movie.find({})
-    .then((movies) => res.send({ data: movies }))
+    .then((movies) => {
+      const sortedMovies = movies.filter((movie) => movie.owner.toString() === req.user._id);
+      res.send({ data: sortedMovies });
+    })
     .catch(next);
 };
 
@@ -57,7 +60,7 @@ module.exports.deleteMovie = (req, res, next) => {
         throw new ForbiddenError(msg.forbidden);
       }
       Movie.deleteOne(foundMovie)
-        .then((movie) => res.status(200).send({ deletedMovie: movie }))
+        .then((movie) => res.send({ deletedMovie: movie }))
         .catch(next);
     })
     .catch((err) => {
