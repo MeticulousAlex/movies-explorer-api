@@ -11,45 +11,20 @@ router.post('/', celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().uri({
-      scheme: [
-        'http',
-        'https',
-      ],
-    }),
-    trailerLink: Joi.string().required().uri({
-      scheme: [
-        'http',
-        'https',
-      ],
-    }),
-    thumbnail: Joi.string().required().uri({
-      scheme: [
-        'http',
-        'https',
-      ],
-    }),
+    image: Joi.string().required().regex(/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?(\S*.)/),
+    trailerLink: Joi.string().required().regex(/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?(\S*.)/),
+    thumbnail: Joi.string().required().regex(/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?(\S*.)/),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),
-  cookies: Joi.object().keys({
-    jwt: Joi.string(),
-  }),
 }), createMovie);
 
-router.get('/', celebrate({
-  cookies: Joi.object().keys({
-    jwt: Joi.string(),
-  }),
-}), getAllMovies);
+router.get('/', getAllMovies);
 
 router.delete('/:_id', celebrate({
-  cookies: Joi.object().keys({
-    jwt: Joi.string(),
-  }),
   params: Joi.object().keys({
-    _id: Joi.string().alphanum().length(24),
+    _id: Joi.string().hex().length(24).required(),
   }),
 }), deleteMovie);
 

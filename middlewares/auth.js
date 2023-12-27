@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+const msg = require('../constants/response-messages');
+const envConsts = require('../constants/evironmentConstants');
 
-const { JWT_SECRET = 'dev-secret' } = process.env;
+const { JWT_SECRET = envConsts.secretKey } = process.env;
 
 module.exports = (req, res, next) => {
   const jwtToken = req.cookies.jwt;
@@ -11,13 +13,13 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(jwtToken, JWT_SECRET);
     if (!payload) {
-      throw new UnauthorizedError('Необходима авторизация');
+      throw new UnauthorizedError(msg.unauthorized);
     }
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
-      next(new UnauthorizedError('Необходима авторизация'));
+      next(new UnauthorizedError(msg.unauthorized));
     }
-    next(new UnauthorizedError('Произошла ошибка'));
+    next(err);
   }
 
   req.user = payload;
