@@ -7,7 +7,6 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
 
-
 const { createUser, login, logout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
@@ -17,11 +16,11 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFoundError = require('./errors/NotFoundError');
 
 const msg = require('./constants/response-messages');
-const envConsts = require('./constants/evironmentConstants');
+// const envConsts = require('./constants/evironmentConstants');
 const corsOrigins = require('./constants/corsOrigins');
 
 const { PORT = 3000 } = process.env;
-const { MONGO_DB = envConsts.mongoServer } = process.env;
+const MONGO_DB = 'mongodb://127.0.0.1:27017/bitfilmsdb';
 
 const app = express();
 

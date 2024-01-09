@@ -82,9 +82,9 @@ module.exports.login = (req, res, next) => {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'None',
-      }).send({ user: userData });
+      }).send(userData);
     })
     .catch((err) => {
       if (err.message === msg.unauthorized) {
