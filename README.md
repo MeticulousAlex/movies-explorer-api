@@ -1,4 +1,4 @@
-# Movies explorer api (frontend) ![Static Badge](https://img.shields.io/badge/version-1.0-green)
+# Movies explorer (backend) ![Static Badge](https://img.shields.io/badge/version-1.0-green)
 
 ## Technologies
 - NodeJS
