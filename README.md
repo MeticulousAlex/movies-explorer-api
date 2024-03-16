@@ -31,12 +31,16 @@
 
 ### Запуск проекта
 ```
+//клонируйте репозиторий
 git clone https://github.com/MeticulousAlex/movies-explorer-api.git
 
+//перейдите в папку проекта
 cd movies-explorer-api
 
+//установите зависимости
 npm install
 
+//запустите проект
 npm run start
 ```
 ## Ссылки проекта
