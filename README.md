@@ -1,8 +1,8 @@
-# Movies explorer (бэкенд) ![Static Badge](https://img.shields.io/badge/version-1.0-green)
+# Movies explorer (backend) ![Static Badge](https://img.shields.io/badge/version-1.0-green)
 
-Бэкенд часть проекта Movies explorer, реализованная для хранения информации о созданных аккаунтах и сохраненных фильмах, а так же авторизации пользователей.
+Backend part of "Movies-explorer" project, implemented to authorize users and to store data about accounts and saved movies.
 
-## Технологии
+## Technologies
 - NodeJS
 - Express
 - MongoDB
@@ -14,41 +14,41 @@
 - Joi Validation
 - Postman
 
-## Функционал
+## Functionality
 
-- Работа с базами данных пользователей и сохраненных фильмов
-- Валидация через Joi и Mongoose Model
-- Хэширование пароля перед сохранением в базу данных
-- JWT верификация пользовательского Id
-- Отправка userId на клиентскую часть в качестве cookie
-- Централизованная обработка ошибок
+- Manipulation with databases of accounts and saved films.
+- Validation through Joi and Mongoose Model.
+- Hashing of password before saving in database.
+- JWT verification of UserId.
+- UserId is sent to client-side as a cookie.
+- Centralized error handling.
 
-## Установка
+## Setting up the project
 
-Перед запуском убедитесь, что на вашем компьютере установлены:
+Make sure that before you start you have these programs installed on your computer:
+
 - Node.js
 - MongoDB Compass
 
-### Запуск проекта
+### Launching the project
 ```
-//клонируйте репозиторий
+//Clone the repository
 git clone https://github.com/MeticulousAlex/movies-explorer-api.git
 
-//перейдите в папку проекта
+//Go to the project's folder
 cd movies-explorer-api
 
-//установите зависимости
+//Install dependencies
 npm install
 
-//запустите проект
+//Launch the project
 npm run start
 ```
-## Ссылки проекта
+## Links
 
-- сервис Movies-explorer: https://alex.movie-explorer.nomoredomainsmonster.ru
-- Фронтенд часть этого проекта: https://github.com/MeticulousAlex/movies-explorer-frontend
+- Website "Movies-explorer": https://alex.movie-explorer.nomoredomainsmonster.ru
+- Frontend part of this project: https://github.com/MeticulousAlex/movies-explorer-frontend
 
-## Обратная свзязь
+## Feedback
 
-Если вы нашли этот проект интересным или у вас есть какие либо комментарии, не стесняйтесь писать мне на aleksandr.smelov.web@gmail.com. 
-
+If you found this project interesting or you have any comments, please, dont' hesitate to contact me at aleksandr.smelov.web@gmail.com. 
