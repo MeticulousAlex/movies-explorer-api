@@ -6,7 +6,7 @@ const envConsts = require('../constants/evironmentConstants');
 const { JWT_SECRET = envConsts.secretKey } = process.env;
 
 module.exports = (req, res, next) => {
-  const jwtToken = req.cookies.jwt;
+  const jwtToken = req.cookies.jwt || ' ';
 
   let payload;
 
